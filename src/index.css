@@ -1,0 +1,184 @@
+/* Bootstrap tabanlı stiller - Responsive, Django uyumlu */
+
+/* Global responsive */
+html, body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Açık tema: yazılar daha okunaklı (yüksek kontrast) */
+.bg-light {
+  --bs-body-color: #212529;
+  --bs-secondary-color: #495057;
+  --bs-body-color-rgb: 33, 33, 41;
+}
+.bg-light .text-muted,
+.bg-light .text-body-secondary {
+  color: #495057 !important;
+}
+.bg-light .text-secondary {
+  color: #495057 !important;
+}
+.bg-light .small,
+.bg-light small {
+  color: #373a3e !important;
+}
+.bg-light .opacity-75 {
+  opacity: 1;
+  color: #495057 !important;
+}
+.bg-light .opacity-90 {
+  opacity: 1;
+  color: #212529 !important;
+}
+/* Açık temada kart / beyaz alan içi metin */
+.bg-light .card .text-muted,
+.bg-light .card .text-secondary,
+.bg-light .card small,
+.bg-light .card-body .text-muted,
+.bg-light .card-body .text-secondary {
+  color: #495057 !important;
+}
+.bg-light .card .small,
+.bg-light .card-body .small {
+  color: #373a3e !important;
+}
+/* Açık temada form */
+.bg-light .form-label,
+.bg-light label {
+  color: #212529 !important;
+}
+.bg-light input::placeholder,
+.bg-light textarea::placeholder {
+  color: #5a6268;
+}
+/* Buton link (nav vb.) açık temada daha koyu */
+.bg-light .btn-link.text-dark {
+  color: #212529 !important;
+}
+.bg-light .btn-link.text-body {
+  color: #212529 !important;
+}
+
+/* Dark mode */
+[data-bs-theme="dark"] .bg-body-custom {
+  background-color: var(--bs-gray-900, #212529);
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* Container: mobil padding, masaüstü max-width */
+.app-container {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card-hover:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(4px);
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ajanda takvim: mobilde daha küçük hücre, yatay kaydırma */
+.min-vh-calendar {
+  min-height: 5rem;
+}
+@media (min-width: 576px) {
+  .min-vh-calendar {
+    min-height: 6rem;
+  }
+}
+
+.agenda-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  min-width: min(100%, 28rem);
+}
+.agenda-calendar-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobil menü offcanvas (slide-in panel) */
+.mobile-offcanvas {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 1055;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow-y: auto;
+}
+.mobile-offcanvas.show {
+  transform: translateX(0);
+  box-shadow: -0.25rem 0 0.5rem rgba(0, 0, 0, 0.15);
+}
+.mobile-offcanvas:not(.show) {
+  transform: translateX(100%);
+}
+.mobile-offcanvas-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s ease;
+}
+
+/* Login: dark temada input kutusu net görünsün */
+.login-input-dark input.form-control {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.login-input-dark input.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+.login-input-dark input.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  border-color: var(--bs-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Modal/dialog: mobilde tam ekran yakın, taşmayı önle */
+@media (max-width: 575.98px) {
+  .modal-content-responsive {
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Responsive genişlik (mobil full, lg'de auto) */
+@media (min-width: 992px) {
+  .w-lg-auto { width: auto !important; }
+}
+
+/* Responsive başlık (mobil küçük, masaüstü büyük) */
+.h5.h4-md.h3-lg { font-size: 1.25rem; }
+@media (min-width: 768px) {
+  .h4-md { font-size: 1.5rem !important; }
+}
+@media (min-width: 992px) {
+  .h3-lg { font-size: 1.875rem !important; }
+}
+
+/* Touch-friendly minimum boyutlar */
+@media (pointer: coarse) {
+  .btn, .form-control, input, select, textarea {
+    min-height: 44px;
+  }
+}
