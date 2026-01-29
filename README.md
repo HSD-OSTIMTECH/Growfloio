@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   # Kullanıcı Gelişim Platformu
 
@@ -9,3 +10,6 @@
 
   Run `npm run dev` to start the development server.
   
+=======
+# Growfolio
+>>>>>>> 6a866780b535e17586dd5c7ecad1bc679eb440d0
