@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Plus, Check, X, List, ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
-import { mockAgendaItems, mockCategories } from '../data/mockData';
+import { mockCategories } from '../data/mockData';
 import { AgendaItem } from '../App';
 
 type ViewMode = 'list' | 'calendar';
@@ -9,13 +9,45 @@ interface AgendaProps {
   darkMode?: boolean;
 }
 
+const API_BASE_URL = 'http://localhost:8000/agenda/items/';
+
 export function Agenda({ darkMode }: AgendaProps) {
-  const [items, setItems] = useState<AgendaItem[]>(mockAgendaItems);
+  const [items, setItems] = useState<AgendaItem[]>([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [selectedDate, setSelectedDate] = useState('2024-01-24');
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [currentMonth, setCurrentMonth] = useState(new Date(2024, 0, 1));
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // API'den items yükle
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const fetchItems = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(API_BASE_URL);
+      if (response.ok) {
+        const data = await response.json();
+        const formattedItems = (Array.isArray(data) ? data : data.results || []).map((item: any) => ({
+          id: item.id.toString(),
+          date: item.date,
+          categoryId: item.category || '',
+          categoryName: item.category || '',
+          title: item.title,
+          description: item.description || '',
+          completed: item.completed || false
+        }));
+        setItems(formattedItems);
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const groupedItems = items.reduce((acc, item) => {
     if (!acc[item.date]) acc[item.date] = [];
@@ -25,29 +57,60 @@ export function Agenda({ darkMode }: AgendaProps) {
 
   const sortedDates = Object.keys(groupedItems).sort();
 
-  const toggleComplete = (id: string) => {
-    setItems(items.map(item => item.id === id ? { ...item, completed: !item.completed } : item));
+  const toggleComplete = async (id: string) => {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}${id}/`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...item, completed: !item.completed })
+      });
+      if (response.ok) {
+        setItems(items.map(i => i.id === id ? { ...i, completed: !i.completed } : i));
+      }
+    } catch (error) {
+      console.error('Update Error:', error);
+    }
   };
 
-  const deleteItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id));
+  const deleteItem = async (id: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}${id}/`, { method: 'DELETE' });
+      if (response.ok || response.status === 204) {
+        setItems(items.filter(i => i.id !== id));
+      }
+    } catch (error) {
+      console.error('Delete Error:', error);
+    }
     setDeleteConfirm(null);
   };
 
-  const handleAddItem = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddItem = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const newItem: AgendaItem = {
-      id: Date.now().toString(),
+    const newItem = {
       date: formData.get('date') as string,
-      categoryId: formData.get('categoryId') as string,
-      categoryName: mockCategories.find(c => c.id === formData.get('categoryId'))?.code || '',
+      category: formData.get('categoryId') as string,
       title: formData.get('title') as string,
       description: formData.get('description') as string,
       completed: false
     };
-    setItems([...items, newItem]);
-    setShowAddForm(false);
+
+    try {
+      const response = await fetch(API_BASE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newItem)
+      });
+      if (response.ok) {
+        await fetchItems();
+        setShowAddForm(false);
+      }
+    } catch (error) {
+      console.error('Create Error:', error);
+    }
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -189,6 +252,14 @@ export function Agenda({ darkMode }: AgendaProps) {
 
   return (
     <div className="d-flex flex-column gap-4">
+      {loading && (
+        <div className={`alert alert-info rounded-3`}>
+          <div className="spinner-border spinner-border-sm me-2" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          Görevler yükleniyor...
+        </div>
+      )}
       <div className="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
         <div>
           <h2 className={`h4 fw-semibold mb-0 ${darkMode ? 'text-white' : 'text-dark'}`}>Ajanda</h2>
