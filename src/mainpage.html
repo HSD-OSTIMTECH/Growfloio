@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş ve Kayıt Paneli</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 { color: #333; margin-bottom: 25px; }
+
+        .input-group { text-align: left; margin-bottom: 15px; }
+
+        label { display: block; margin-bottom: 5px; color: #666; font-size: 14px; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .login-btn { background-color: #5c67f2; }
+        .login-btn:hover { background-color: #4a54e1; }
+
+         -btn { background-color: #284ca7; }
+        .register-btn:hover { background-color: #5c67f2; }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .footer a {
+            color: #5c67f2;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Başlangıçta Kayıt formunu gizle */
+        #register-form { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="login-form">
+            <h2>Giriş Yap</h2>
+            <form>
+                <div class="input-group">
+                    <label>E-posta</label>
+                    <input type="email" placeholder="E-posta adresiniz" required>
+                </div>
+                <div class="input-group">
+                    <label>Şifre</label>
+                    <input type="password" placeholder="Şifreniz" required>
+                </div>
+                <button type="submit" class="login-btn">Giriş Yap</button>
+                <div class="footer">
+                    Henüz hesabın yok mu? <br>
+                    <a onclick="toggleForm()">Hemen Kayıt Ol</a>
+                </div>
+            </form>
+        </div>
+
+        <div id="register-form">
+            <h2>Kayıt Ol</h2>
+            <form>
+                <div class="input-group">
+                    <label>Ad Soyad</label>
+                    <input type="text" placeholder="Tam adınız" required>
+                </div>
+                <div class="input-group">
+                    <label>E-posta</label>
+                    <input type="email" placeholder="E-posta adresiniz" required>
+                </div>
+                <div class="input-group">
+                    <label>Şifre</label>
+                    <input type="password" placeholder="Şifre oluşturun" required>
+                </div>
+                <button type="submit" class="register-btn">Kayıt Ol</button>
+                <div class="footer">
+                    Zaten üye misin? <br>
+                    <a onclick="toggleForm()">Giriş Yap</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+            } else {
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
