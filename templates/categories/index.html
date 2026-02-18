@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Kategoriler · Growfolio{% endblock %}
+
+{% block content %}
+  <section class="container">
+    <div class="pageHeader">
+      <h1 class="pageTitle">Kategoriler</h1>
+      <div class="searchWrap">
+        <input
+          id="categorySearch"
+          class="searchInput"
+          type="search"
+          placeholder="Kategori adı veya kod ile ara…"
+          autocomplete="off"
+        />
+      </div>
+    </div>
+
+    <div id="categoriesGrid" class="grid" role="list">
+      {% for c in categories %}
+        <article
+          class="card {{ c.theme }}"
+          role="listitem"
+          tabindex="0"
+          data-title="{{ c.title|escape }}"
+          data-code="{{ c.code|escape }}"
+          data-desc="{{ c.desc|escape }}"
+          data-experiences="{{ c.experiences }}"
+          data-likes="{{ c.likes }}"
+        >
+          <div class="card__top">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path
+                  fill="currentColor"
+                  d="M7 3h10a2 2 0 0 1 2 2v14a1 1 0 0 1-1.447.894L12 17.118l-5.553 2.776A1 1 0 0 1 5 19V5a2 2 0 0 1 2-2Zm10 2H7v12.382l4.553-2.276a1 1 0 0 1 .894 0L17 17.382V5Z"
+                />
+              </svg>
+            </div>
+            <div class="card__code">{{ c.code }}</div>
+          </div>
+
+          <h2 class="card__title">{{ c.title }}</h2>
+          <p class="card__desc">{{ c.desc }}</p>
+
+          <div class="card__stats">
+            <span class="stat">
+              <span class="stat__icon" aria-hidden="true">↗</span>
+              <span class="stat__value">{{ c.experiences }}</span>
+              <span class="stat__label">deneyim</span>
+            </span>
+            <span class="stat">
+              <span class="stat__icon" aria-hidden="true">♡</span>
+              <span class="stat__value">{{ c.likes }}</span>
+              <span class="stat__label">beğeni</span>
+            </span>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <section id="detailPanel" class="detail isHidden" aria-live="polite">
+      <div class="detail__head">
+        <div>
+          <div id="detailCode" class="detail__code"></div>
+          <div id="detailTitle" class="detail__title"></div>
+        </div>
+        <button id="detailClose" class="detail__close" type="button">Kapat</button>
+      </div>
+      <p id="detailDesc" class="detail__desc"></p>
+      <div class="detail__meta">
+        <span><strong id="detailExperiences"></strong> deneyim</span>
+        <span><strong id="detailLikes"></strong> beğeni</span>
+      </div>
+    </section>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/categories.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ category.title }} · Growfolio{% endblock %}
+
+{% block content %}
+  <section class="container">
+    <section class="categoryHero {{ category.theme }}">
+      <div class="categoryHero__left">
+        <div class="categoryHero__code">{{ category.code }}</div>
+        <h1 class="categoryHero__title">{{ category.title }}</h1>
+        <p class="categoryHero__desc">{{ category.desc }}</p>
+      </div>
+
+      <div class="categoryHero__right">
+        <button id="openExperienceModal" class="primaryBtn" type="button">
+          <span class="primaryBtn__icon" aria-hidden="true">＋</span>
+          Deneyim Paylaş
+        </button>
+      </div>
+    </section>
+
+    <section class="experiences">
+      <div class="experiences__header">
+        <h2 class="experiences__title">
+          Paylaşılan Deneyimler (<span id="experienceCount">{{ experiences|length }}</span>)
+        </h2>
+      </div>
+
+      <div id="experienceList" class="experienceList">
+        {% for e in experiences %}
+          <article class="experienceCard">
+            <div class="experienceCard__top">
+              <div>
+                <h3 class="experienceCard__title">{{ e.title }}</h3>
+                <div class="experienceCard__meta">
+                  <span>Paylaşan: {{ e.author }}</span>
+                  <span>·</span>
+                  <span>{{ e.date }}</span>
+                  <span class="experienceCard__note">Not: {{ e.note }}</span>
+                </div>
+              </div>
+              <button class="likePill" type="button" aria-label="Beğeni">
+                <span class="likePill__icon" aria-hidden="true">❤</span>
+                <span class="likePill__count">{{ e.likes }}</span>
+              </button>
+            </div>
+
+            <div class="experienceCard__sources">
+              <div class="sources__label">Kullanılan Kaynaklar:</div>
+              <ul class="sources__list">
+                {% for s in e.sources %}
+                  <li>{{ s }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="experienceCard__body">
+              <div class="experienceCard__text">{{ e.body }}</div>
+            </div>
+          </article>
+        {% empty %}
+          <div class="emptyState">
+            Henüz deneyim paylaşılmamış. İlk deneyimi sen paylaş!
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </section>
+
+  <div id="modalOverlay" class="modalOverlay isHidden" aria-hidden="true">
+    <div
+      id="experienceModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      tabindex="-1"
+    >
+      <div class="modal__header">
+        <h2 id="modalTitle" class="modal__title">Yeni Deneyim Paylaş</h2>
+        <button id="closeExperienceModal" class="modal__close" type="button" aria-label="Kapat">
+          ×
+        </button>
+      </div>
+
+      <form id="experienceForm" class="form">
+        <label class="field">
+          <div class="field__label">Başlık</div>
+          <input
+            class="field__input"
+            name="title"
+            type="text"
+            placeholder="Örn: Türev Konusu Çalışma Deneyimim"
+            required
+          />
+        </label>
+
+        <label class="field">
+          <div class="field__label">Kullandığım Kaynaklar (Her satıra bir kaynak)</div>
+          <textarea
+            class="field__textarea"
+            name="sources"
+            rows="4"
+            placeholder="Örn:\nThomas Calculus Kitabı\nKhan Academy\nMIT OpenCourseWare"
+          ></textarea>
+        </label>
+
+        <label class="field">
+          <div class="field__label">Deneyimlerim ve Notlarım</div>
+          <textarea
+            class="field__textarea"
+            name="body"
+            rows="5"
+            placeholder="Çalışma sürecinizi, karşılaştığınız zorlukları, başarı hikayenizi paylaşın..."
+            required
+          ></textarea>
+        </label>
+
+        <label class="field">
+          <div class="field__label">Aldığım Not (Opsiyonel)</div>
+          <input class="field__input" name="note" type="text" placeholder="Örn: AA, BA, 95, vb." />
+        </label>
+
+        <div class="form__actions">
+          <button id="cancelExperience" class="ghostBtn" type="button">İptal</button>
+          <button class="primaryBtn" type="submit">Paylaş</button>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/category_detail.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Growfolio{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/categories.css' %}" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="brandMark" aria-hidden="true">↗</span>
+        <span>Growfolio</span>
+      </div>
+
+      <nav class="topbar__nav" aria-label="Ana menü">
+        <a class="topbar__link" href="#">Ana Sayfa</a>
+        <a class="topbar__link" href="#">Ajanda</a>
+        <a
+          class="topbar__link {% if request.path|slice:':12' == '/categories/' %}isActive{% endif %}"
+          href="/categories/"
+          >Kategoriler</a
+        >
+        <a class="topbar__link" href="#">Profil</a>
+      </nav>
+
+      <div class="topbar__right">
+        <span class="topbar__user">ozcanfatmaeebrar</span>
+      </div>
+    </header>
+
+    <main class="page">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
+
