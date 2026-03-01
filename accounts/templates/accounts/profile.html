@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Growfolio • Profil</title>
+  <link rel="stylesheet" href="profile.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav__inner container">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M4 16l6-6 4 4 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 10V4h-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand__name">Growfolio</span>
+      </div>
+
+      <nav class="menu">
+        <a class="menu__item" href="#">
+          <span class="i" aria-hidden="true"></span>
+          Ana Sayfa
+        </a>
+        <a class="menu__item" href="#">
+          <span class="i" aria-hidden="true"></span>
+          Ajanda
+        </a>
+        <a class="menu__item" href="#">
+          <span class="i" aria-hidden="true"></span>
+          Kategoriler
+        </a>
+        <a class="menu__item menu__item--active" href="#">
+          <span class="i" aria-hidden="true"></span>
+          Profil
+        </a>
+      </nav>
+
+      <div class="nav__right">
+        <button class="iconbtn" title="Tema">
+          🌙
+        </button>
+        <div class="userchip">
+          <span id="navUserName">Ayşe Yılmaz</span>
+        </div>
+        <button class="iconbtn" title="Çıkış">
+          ↪
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container page">
+    <!-- BLUE PROFILE HEADER -->
+    <section class="hero">
+      <div class="hero__avatar" aria-hidden="true"></div>
+
+      <div class="hero__content">
+        <h1 id="userName">Ayşe Yılmaz</h1>
+        <p class="hero__subtitle">Bilgisayar Mühendisliği Öğrencisi</p>
+
+        <div class="hero__stats">
+          <div class="statbox">
+            <div class="statbox__label">Toplam Deneyim</div>
+            <div class="statbox__value" id="statExp">0</div>
+          </div>
+          <div class="statbox">
+            <div class="statbox__label">Toplam Beğeni</div>
+            <div class="statbox__value" id="statLikes">0</div>
+          </div>
+          <div class="statbox">
+            <div class="statbox__label">Toplam Proje</div>
+            <div class="statbox__value" id="statProjects">0</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCES -->
+    <section class="card">
+      <h2 class="card__title">Paylaştığım Deneyimler</h2>
+
+      <div class="list" id="experienceList"></div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="card">
+      <div class="card__head">
+        <div>
+          <h2 class="card__title">Projelerim</h2>
+          <p class="card__desc">CV niteliğinde proje portföyünüz</p>
+        </div>
+
+        <button class="btn btn--primary" id="openModalBtn">
+          <span class="btn__plus">＋</span>
+          Proje Ekle
+        </button>
+      </div>
+
+      <div class="projects" id="projectList"></div>
+    </section>
+
+    <!-- INFO BOX -->
+    <section class="infobox">
+      <div class="infobox__title"> Profilini Güçlendir</div>
+      <div class="infobox__text">
+        Projelerinizi düzenli olarak güncelleyerek profesyonel bir portföy oluşturabilirsiniz.
+        Deneyimlerinizi paylaşarak hem kendinize hem de topluluk için değerli bir kaynak
+        oluşturmuş olursunuz.
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__left">
+        <div class="brand brand--small">
+          <div class="brand__logo" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M4 16l6-6 4 4 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 10V4h-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="brand__name">Growfolio</span>
+        </div>
+        <div class="footer__tag">Gelişim yolculuğun burada başlıyor</div>
+      </div>
+
+      <div class="footer__right">
+        © <span id="year"></span> Growfolio. Tüm hakları saklıdır. • Made with ❤️ for learners
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      Gelişim sürecinizi paylaşın, başkalarından ilham alın ve birlikte büyüyün.
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal hidden" id="modal">
+    <div class="modal__overlay" id="modalOverlay"></div>
+
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal__head">
+        <div class="modal__title" id="modalTitle">Yeni Proje Ekle</div>
+        <button class="iconbtn iconbtn--ghost" id="closeModalBtn" aria-label="Kapat">✕</button>
+      </div>
+
+      <form class="form" id="projectForm">
+        <label class="field">
+          <span>Proje Başlığı</span>
+          <input name="title" type="text" placeholder="Örn: Öğrenci Yönetim Sistemi" required />
+        </label>
+
+        <label class="field">
+          <span>Proje Açıklaması</span>
+          <textarea name="description" rows="3" placeholder="Web tabanlı öğrenci bilgilerini yönetebilen bir sistem" required></textarea>
+        </label>
+
+        <label class="field">
+          <span>Çözülen Problem</span>
+          <textarea name="problem" rows="4" placeholder="Bu proje hangi problemi çözüyor? Amacı nedir?" required></textarea>
+        </label>
+
+        <label class="field">
+          <span>Tamamlanma Tarihi</span>
+          <input name="date" type="month" required />
+        </label>
+
+        <div class="form__actions">
+          <button type="button" class="btn" id="cancelBtn">İptal</button>
+          <button type="submit" class="btn btn--primary">Ekle</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="profile.js"></script>
+</body>
+</html>
